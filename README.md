@@ -1,2 +1,2 @@
-# psqlorm
+# PSQL ORM
 Postgres ORM
