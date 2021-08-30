@@ -1,2 +1,2 @@
-# PSQL ORM
-Postgres ORM
+# PSQL RM
+Postgres Relational Mapper

@@ -1,21 +1,21 @@
 {
-  "name": "@waghravi/psqlorm",
-  "version": "1.0.2",
-  "description": "PGSQL ORM",
+  "name": "@waghravi/psqlrm",
+  "version": "1.0.3",
+  "description": "Postgres Relational Mapper",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rwagh/psqlorm.git"
+    "url": "git+https://github.com/rwagh/psqlrm.git"
   },
   "author": "Ravindra Wagh <ravindra.wagh@live.in>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rwagh/psqlorm/issues"
+    "url": "https://github.com/rwagh/psqlrm/issues"
   },
-  "homepage": "https://github.com/rwagh/psqlorm#readme",
+  "homepage": "https://github.com/rwagh/psqlrm#readme",
   "dependencies": {
     "dotenv": "^10.0.0",
     "json-easy-filter": "^0.3.1",
