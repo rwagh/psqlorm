@@ -104,3 +104,4 @@ dist
 .tern-port
 
 app.js
+node_modules
