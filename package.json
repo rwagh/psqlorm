@@ -1,0 +1,28 @@
+{
+  "name": "psqlorm",
+  "version": "1.0.0",
+  "description": "Postgres ORM",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rwagh/psqlorm.git"
+  },
+  "author": {
+    "name": "Ravindra Wagh",
+    "email": "ravindra.wagh@live.in",
+    "phone": "+91 99043 77726"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rwagh/psqlorm/issues"
+  },
+  "homepage": "https://github.com/rwagh/psqlorm#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "json-easy-filter": "^0.3.1",
+    "pg": "^8.7.1"
+  }
+}
