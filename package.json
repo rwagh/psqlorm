@@ -1,7 +1,7 @@
 {
   "name": "psqlorm",
-  "version": "1.0.0",
-  "description": "Postgres ORM",
+  "version": "1.0.1",
+  "description": "PGSQL ORM",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
