@@ -23,9 +23,9 @@ class Query {
     }
     
     build(args){
-        var inserts = args.input.insert;
-        var updates = args.input.update;
-        var deletes = args.input.delete;
+        var inserts = args.insert;
+        var updates = args.update;
+        var deletes = args.delete;
         //console.log('inserts: ', inserts, 'updates: ', updates,'deletes: ', deletes);
         var queries = []
         if(inserts){

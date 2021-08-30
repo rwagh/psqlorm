@@ -105,7 +105,7 @@ class Data {
         var query = Select.build(args);
         delete args.input["groupBy"];
         var values = this.extactValues(args);
-        let tables = args.input.tables;
+        let tables = args.tables;
         let columns = await this.columns(tables);
         let queryColumns = [];
         tables.forEach(table => {
@@ -149,7 +149,7 @@ class Data {
         var query = Distinct.build(args);
         delete args.input["groupBy"];
         var values = this.extactValues(args);
-        let tables = args.input.tables;
+        let tables = args.tables;
         let columns = await this.columns(tables);
         let queryColumns = [];
         tables.forEach(table => {
@@ -297,9 +297,9 @@ class Data {
         if (!valid) {
             return Error("Syntax error in schema!");
         }
-        var inserts = args.input.insert;
-        var updates = args.input.update;
-        var deletes = args.input.delete;
+        var inserts = args.insert;
+        var updates = args.update;
+        var deletes = args.delete;
 
         var queries = []
         if (inserts) {
