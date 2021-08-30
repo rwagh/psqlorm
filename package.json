@@ -1,5 +1,5 @@
 {
-  "name": "@public/psqlorm",
+  "name": "@waghravi/psqlorm",
   "version": "1.0.2",
   "description": "PGSQL ORM",
   "main": "index.js",
