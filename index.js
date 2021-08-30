@@ -103,7 +103,7 @@ class Data {
         }
 
         var query = Select.build(args);
-        delete args.input["groupBy"];
+        delete args["groupBy"];
         var values = this.extactValues(args);
         let tables = args.tables;
         let columns = await this.columns(tables);
@@ -147,7 +147,7 @@ class Data {
         }
 
         var query = Distinct.build(args);
-        delete args.input["groupBy"];
+        delete args["groupBy"];
         var values = this.extactValues(args);
         let tables = args.tables;
         let columns = await this.columns(tables);
@@ -202,7 +202,7 @@ class Data {
         if (!valid) {
             return Error("Syntax error in schema!");
         }
-        var input = args.input;
+        var input = args;
         var sql = `SELECT MIN(${input.column}) FROM ${input.table}`
         sql += this.Select.where(input.criteria);
         var values = this.extactValues(args);
@@ -215,7 +215,7 @@ class Data {
         if (!valid) {
             return Error("Syntax error in schema!");
         }
-        var input = args.input;
+        var input = args;
         var sql = `SELECT MAX(${input.column}) FROM ${input.table}`
         sql += this.Select.where(input.criteria);
         var values = this.extactValues(args);
@@ -228,7 +228,7 @@ class Data {
         if (!valid) {
             return Error("Syntax error in schema!");
         }
-        var input = args.input;
+        var input = args;
         var sql = `SELECT SUM(${input.column}) FROM ${input.table}`
         sql += this.Select.where(input.criteria);
         var values = this.extactValues(args);
@@ -241,7 +241,7 @@ class Data {
         if (!valid) {
             return Error("Syntax error in schema!");
         }
-        var input = args.input;
+        var input = args;
         var sql = `SELECT AVG(${input.column}) FROM ${input.table}`
         sql += this.Select.where(input.criteria);
         var values = this.extactValues(args);
@@ -268,7 +268,7 @@ class Data {
             return Error("Syntax error in schema!");
         }
         var query = Update.build(args);
-        var extract_values = args.input;
+        var extract_values = args;
         delete extract_values["columns"];
         var values = this.extactValues(extract_values);
         try {
@@ -309,8 +309,8 @@ class Data {
                 };
 
                 var query = { table: item.table, query: Insert.build(args) };
-                delete args.input["columns"];
-                var values = this.extactValues(args.input);
+                delete args["columns"];
+                var values = this.extactValues(args);
                 query.values = values;
                 queries.push(query);
             });
@@ -322,8 +322,8 @@ class Data {
                 };
 
                 var query = { table: item.table, query: Update.build(args) };
-                delete args.input["columns"];
-                var values = this.extactValues(args.input);
+                delete args["columns"];
+                var values = this.extactValues(args);
                 query.values = values;
                 queries.push(query);
             });
@@ -335,8 +335,8 @@ class Data {
                 };
 
                 var query = { table: item.table, query: Delete.build(args) };
-                delete args.input["columns"];
-                var values = this.extactValues(args.input);
+                delete args["columns"];
+                var values = this.extactValues(args);
                 query.values = values;
                 queries.push(query);
             });

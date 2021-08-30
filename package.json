@@ -1,6 +1,6 @@
 {
   "name": "@waghravi/psqlrm",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Postgres Relational Mapper",
   "main": "index.js",
   "scripts": {
