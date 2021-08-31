@@ -115,3 +115,12 @@ Change the configuration to connect database in .env file
     </ul>
   </li>
 </ol>
+
+### Examples
+#### tables
+##### graphql
+<pre>
+  query {
+    tables
+  }
+</pre>
