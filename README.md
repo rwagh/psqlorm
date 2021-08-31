@@ -117,10 +117,3 @@ Change the configuration to connect database in .env file
 </ol>
 
 ### Examples
-#### 1. tables
-##### graphql
-<pre>
-  query {
-    tables
-  }
-</pre>
