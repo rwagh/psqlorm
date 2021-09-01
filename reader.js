@@ -5,9 +5,6 @@ const tables = require('./queries/tables.json');
 const columns = require('./queries/columns.json');
 const foreignkeys = require('./queries/foreignkeys.json');
 const Select = require('./src/Select');
-const Insert = require('./src/Insert');
-const Update = require('./src/Update');
-const Delete = require('./src/Delete');
 const Distinct = require('./src/Distinct');
 
 const letters = new RegExp(/^[_a-zA-Z0-9]+$/);
@@ -18,8 +15,9 @@ const pool = new Pool({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     max: 20,
+    poolSize:  20,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 2000
 });
 class Reader {
     constructor() {
