@@ -85,7 +85,7 @@ class Select {
         let offset = args.offset;
         let limit = args.limit;
         if (limit) {
-            query += `LIMIT ${limit}`;
+            query += ` LIMIT ${limit}`;
         }
 
         if (offset) {
