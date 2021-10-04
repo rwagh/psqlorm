@@ -1,4 +1,4 @@
-class Distinct {
+export default class Distinct {
     valueType(value) {
         return (typeof value);
     }
@@ -237,4 +237,3 @@ class Distinct {
         return clause;
     }
 }
-module.exports = new Distinct();

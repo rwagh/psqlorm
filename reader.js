@@ -1,11 +1,13 @@
+import { createRequire } from 'module'
+const require = createRequire(import.meta.url);
 const { Pool } = require('pg');
-require('dotenv').config();
-var JefNode = require('json-easy-filter').JefNode;
-const tables = require('./queries/tables.json');
-const columns = require('./queries/columns.json');
-const foreignkeys = require('./queries/foreignkeys.json');
-const Select = require('./src/Select');
-const Distinct = require('./src/Distinct');
+import dotenv from "dotenv";
+dotenv.config();
+
+const JefNode = require('json-easy-filter').JefNode;
+
+import Select from  "./src/Select.js";
+import Distinct from './src/Distinct.js';
 
 const letters = new RegExp(/^[_a-zA-Z0-9]+$/);
 const pool = new Pool({
@@ -19,13 +21,13 @@ const pool = new Pool({
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 2000
 });
-class Reader {
+export default class Reader {
     constructor() {
-        this.Distinct = Distinct;
-        this.Select = Select;
-        this.table_query = tables.query;
-        this.column_query = columns.query;
-        this.foreign_keys = foreignkeys.query;
+        this.Distinct = new Distinct();
+        this.Select = new Select();
+        this.table_query = "SELECT table_name as name FROM information_schema.tables WHERE table_schema ='public'";
+        this.column_query = "SELECT table_name as table, column_name as name, data_type as type, character_octet_length length, is_nullable nullable FROM information_schema.columns WHERE table_schema ='public' AND table_name IN(@@table)";
+        this.foreign_keys = "SELECT tc.table_name, tc.constraint_type, kcu.column_name, ccu.table_name AS foreign_table_name, ccu.column_name AS foreign_column_name FROM information_schema.table_constraints AS tc JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name AND tc.table_schema = kcu.table_schema JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name AND ccu.table_schema = tc.table_schema WHERE tc.constraint_type = 'FOREIGN KEY' AND tc.table_name='@@table' AND tc.table_schema='public';";
     }
 
     async execute(sql, values) {
@@ -79,7 +81,7 @@ class Reader {
     }
 
     async foreignkeys(table) {
-        var query = foreignkeys.query;
+        var query = this.foreign_keys;
         query = query.replace("@@table", table);
         try {
             console.log(query);
@@ -313,4 +315,3 @@ class Reader {
         return (counts > 0) ? false : true;
     }
 }
-module.exports = new Reader();

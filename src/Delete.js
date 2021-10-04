@@ -1,4 +1,4 @@
-class Delete {
+export default class Delete {
     valueType(value) {
         return (typeof value);
     }
@@ -139,5 +139,3 @@ class Delete {
         return clause;
     }
 }
-
-module.exports = new Delete();

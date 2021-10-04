@@ -1,4 +1,4 @@
-class Update {
+export default class Update {
     valueType(value) {
         return (typeof value);
     }
@@ -150,5 +150,3 @@ class Update {
         return clause;
     }
 }
-
-module.exports = new Update();

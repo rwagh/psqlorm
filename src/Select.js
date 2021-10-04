@@ -1,7 +1,4 @@
-const table_columns = require('../queries/columns.json');
-//const Data = require('./Data');
-
-class Select {
+export default class Select {
     valueType(value) {
         return (typeof value);
     }
@@ -241,4 +238,3 @@ class Select {
         return clause;
     }
 }
-module.exports = new Select();

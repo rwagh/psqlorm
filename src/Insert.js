@@ -1,4 +1,4 @@
-class Insert {
+export default class Insert {
     valueType(value) {
         return (typeof value);
     }
@@ -13,5 +13,3 @@ class Insert {
         return query;
     }
 }
-
-module.exports = new Insert();
