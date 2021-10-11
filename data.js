@@ -10,7 +10,7 @@ import Delete from "./src/Delete.js";
 
 const letters = new RegExp(/^[_a-zA-Z0-9]+$/);
 const pool = new Pool({
-  host: process.env.WRITER_HOST,
+  host: process.env.DB_HOST,
   port: process.env.DB_PORT,
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
@@ -20,7 +20,7 @@ const pool = new Pool({
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 });
-export default class Writer {
+export default class Data {
   constructor() {
     this.Insert = new Insert();
     this.Update = new Update();

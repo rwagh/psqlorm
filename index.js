@@ -1,7 +1,5 @@
-import Reader from "./reader.js";
-import Writer from "./writer.js";
+import Data from "./data.js";
 
 export default {
-  reader: new Reader(),
-  writer: new Writer(),
+  db: new Data()
 };
