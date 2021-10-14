@@ -7,7 +7,8 @@ var JefNode = require("json-easy-filter").JefNode;
 import Insert from "./src/Insert.js";
 import Update from "./src/Update.js";
 import Delete from "./src/Delete.js";
-
+import Select from "./src/Select.js";
+import Distinct from "./src/Distinct.js";
 const letters = new RegExp(/^[_a-zA-Z0-9]+$/);
 const pool = new Pool({
   host: process.env.DB_HOST,
@@ -25,6 +26,8 @@ export default class Data {
     this.Insert = new Insert();
     this.Update = new Update();
     this.Delete = new Delete();
+    this.Select = new Select();
+    this.Distinct = new Distinct();
   }
 
   async execute(sql, values) {
@@ -45,7 +48,188 @@ export default class Data {
       client.release();
     }
   }
+  async tables() {
+    var query = this.table_query;
+    try {
+      let results = await this.execute(query, null);
+      return results.map((item) => {
+        return item.name;
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
 
+  async columns(tables) {
+    var query = this.column_query;
+    var tbls = "";
+    tables.forEach((table) => {
+      tbls += `'${table.name}',`;
+    });
+    tbls = tbls.substr(0, tbls.length - 1);
+    query = query.replace("@@table", tbls);
+    try {
+      let results = await this.execute(query, null);
+      return results.map((item) => {
+        return item;
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async foreignkeys(table) {
+    var query = foreignkeys.query;
+    query = query.replace("@@table", table);
+    try {
+      console.log(query);
+      let results = await this.execute(query, null);
+      return results.map((item) => {
+        return item;
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
+  async select(args) {
+    var query = Select.build(args);
+    delete args.input["groupBy"];
+    var values = this.extactValues(args);
+    let tables = args.input.tables;
+    let columns = await this.columns(tables);
+    let queryColumns = [];
+    tables.forEach((table) => {
+      table.columns.forEach((column) => {
+        queryColumns.push({
+          table: table.name,
+          name: column.name,
+          alias: column.alias,
+        });
+      });
+    });
+    var rows = [];
+    try {
+      let list = await this.execute(query, values);
+      list.forEach((item) => {
+        var keys = Object.keys(item);
+        keys.forEach((x) => {
+          var column = queryColumns.find((c) => {
+            return c.name === x || (c.alias !== undefined && c.alias === x);
+          });
+          var tbl_col = columns.find((c) => {
+            return c.name === column.name && c.table === column.table;
+          });
+          if (
+            tbl_col.type === "bigint" ||
+            tbl_col.type === "integer" ||
+            tbl_col.type === "real" ||
+            tbl_col.type === "numeric"
+          ) {
+            item[x] = Number(item[x]);
+          } else if (tbl_col.type === "boolean") {
+            item[x] = Boolean(item[x]);
+          }
+        });
+        rows.push(item);
+      });
+      return rows;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async distinct(args) {
+    var query = Distinct.build(args);
+    delete args.input["groupBy"];
+    var values = this.extactValues(args);
+    let tables = args.input.tables;
+    let columns = await this.columns(tables);
+    let queryColumns = [];
+    tables.forEach((table) => {
+      table.columns.forEach((column) => {
+        queryColumns.push({
+          table: table.name,
+          name: column.name,
+          alias: column.alias,
+        });
+      });
+    });
+
+    var rows = [];
+    try {
+      let list = await this.execute(query, values);
+      list.forEach((item) => {
+        var keys = Object.keys(item);
+        keys.forEach((x) => {
+          var column = queryColumns.find((c) => {
+            return c.name === x || (c.alias !== undefined && c.alias === x);
+          });
+          var tbl_col = columns.find((c) => {
+            return c.name === column.name && c.table === column.table;
+          });
+          if (
+            tbl_col.type === "bigint" ||
+            tbl_col.type === "integer" ||
+            tbl_col.type === "real" ||
+            tbl_col.type === "numeric"
+          ) {
+            item[x] = Number(item[x]);
+          } else if (tbl_col.type === "boolean") {
+            item[x] = Boolean(item[x]);
+          }
+        });
+        rows.push(item);
+      });
+      return rows;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async count(args) {
+    var input = args.input;
+    var sql = `SELECT COUNT(1) FROM ${input.table}`;
+    sql += this.Select.where(input.criteria);
+    var values = this.extactValues(args);
+    let result = await this.execute(sql, values);
+    return result[0].count;
+  }
+
+  async min(args) {
+    var input = args.input;
+    var sql = `SELECT MIN(${input.column}) FROM ${input.table}`;
+    sql += this.Select.where(input.criteria);
+    var values = this.extactValues(args);
+    let result = await this.execute(sql, values);
+    return result[0].min;
+  }
+
+  async max(args) {
+    var input = args.input;
+    var sql = `SELECT MAX(${input.column}) FROM ${input.table}`;
+    sql += this.Select.where(input.criteria);
+    var values = this.extactValues(args);
+    let result = await this.execute(sql, values);
+    return result[0].max;
+  }
+
+  async sum(args) {
+    var input = args.input;
+    var sql = `SELECT SUM(${input.column}) FROM ${input.table}`;
+    sql += this.Select.where(input.criteria);
+    var values = this.extactValues(args);
+    let result = await this.execute(sql, values);
+    return result[0].sum;
+  }
+
+  async avg(args) {
+    var input = args.input;
+    var sql = `SELECT AVG(${input.column}) FROM ${input.table}`;
+    sql += this.Select.where(input.criteria);
+    var values = this.extactValues(args);
+    let result = await this.execute(sql, values);
+    return result[0].avg;
+  }
   async insert(args, values) {
     let valid = this.isValid(args);
     if (!valid) {
