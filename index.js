@@ -139,7 +139,7 @@ export default class Data {
   }
 
   async distinct(args) {
-    var query = Distinct.build(args);
+    var query = this.Distinct.build(args);
     delete args.input["groupBy"];
     var values = this.extactValues(args);
     let tables = args.input.tables;
