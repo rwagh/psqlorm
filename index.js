@@ -235,7 +235,7 @@ export default class Data {
     if (!valid) {
       return Error("Syntax error in schema!");
     }
-    var query = Insert.build(args);
+    var query = this.Insert.build(args);
     try {
       return await this.execute(query, values);
     } catch (err) {
@@ -248,7 +248,7 @@ export default class Data {
     if (!valid) {
       return Error("Syntax error in schema!");
     }
-    var query = Update.build(args);
+    var query = this.Update.build(args);
     var extract_values = args;
     delete extract_values["columns"];
     var values = this.extactValues(extract_values);
@@ -264,7 +264,7 @@ export default class Data {
     if (!valid) {
       return Error("Syntax error in schema!");
     }
-    var query = Delete.build(args);
+    var query = this.Delete.build(args);
     var values = this.extactValues(args);
     try {
       return await this.execute(query, values);
@@ -395,7 +395,7 @@ export default class Data {
         var args = {
           input: input.insert,
         };
-        query = Insert.build(args);
+        query = this.Insert.build(args);
         values = input.insert.values;
         res = await client.query(query, values);
       } else if (input.update) {
@@ -409,11 +409,11 @@ export default class Data {
         var args = {
           input: input.insert,
         };
-        query = Insert.build(args);
+        query = this.Insert.build(args);
         values = input.insert.values;
         res = await client.query(query, values);
       } else if (input.delete) {
-        query = Delete.build(args);
+        query = this.Delete.build(args);
         res = await client.query(query);
       }
       return executeRecursively(input.complex, {
@@ -423,15 +423,15 @@ export default class Data {
       });
     } else {
       if (input.insert) {
-        query = Insert.build(args);
+        query = this.Insert.build(args);
         values = input.insert.values;
         res = await client.query(query, values);
       } else if (input.update) {
-        query = Update.build(args);
+        query = this.Update.build(args);
         values = input.insert.values;
         res = await client.query(query, values);
       } else if (input.delete) {
-        query = Delete.build(args);
+        query = this.Delete.build(args);
         res = await client.query(query);
       }
       return { type: res.command, table: item.table, content: res.rows[0] };
