@@ -1,5 +1,6 @@
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
+const columns = require("./queries/columns.json");
 const { Pool } = require("pg");
 import dotenv from "dotenv";
 dotenv.config();
@@ -28,6 +29,7 @@ export default class Data {
     this.Delete = new Delete();
     this.Select = new Select();
     this.Distinct = new Distinct();
+    this.column_query = columns.query;
   }
 
   async execute(sql, values) {
@@ -199,7 +201,7 @@ export default class Data {
     if (!valid) {
       return Error("Syntax error in schema!");
     }
-    
+
     let sql = `SELECT COUNT(1) FROM ${args.table}`;
     sql += this.Select.where(args.criteria);
     let values = this.extactValues(args);
@@ -212,7 +214,7 @@ export default class Data {
     if (!valid) {
       return Error("Syntax error in schema!");
     }
-  
+
     let sql = `SELECT MIN(${args.column}) FROM ${args.table}`;
     sql += this.Select.where(args.criteria);
     let values = this.extactValues(args);
@@ -225,7 +227,7 @@ export default class Data {
     if (!valid) {
       return Error("Syntax error in schema!");
     }
- 
+
     let sql = `SELECT MAX(${args.column}) FROM ${args.table}`;
     sql += this.Select.where(args.criteria);
     let values = this.extactValues(args);
@@ -238,7 +240,7 @@ export default class Data {
     if (!valid) {
       return Error("Syntax error in schema!");
     }
-  
+
     var sql = `SELECT SUM(${args.column}) FROM ${args.table}`;
     sql += this.Select.where(args.criteria);
     var values = this.extactValues(args);
@@ -251,7 +253,7 @@ export default class Data {
     if (!valid) {
       return Error("Syntax error in schema!");
     }
-   
+
     let sql = `SELECT AVG(${args.column}) FROM ${args.table}`;
     sql += this.Select.where(args.criteria);
     let values = this.extactValues(args);
