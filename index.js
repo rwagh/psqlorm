@@ -92,7 +92,7 @@ export default class Data {
     }
   }
   async select(args) {
-    var query = Select.build(args);
+    var query = this.Select.build(args);
     delete args.input["groupBy"];
     var values = this.extactValues(args);
     let tables = args.input.tables;
