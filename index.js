@@ -92,10 +92,14 @@ export default class Data {
     }
   }
   async select(args) {
+    let valid = this.isValid(args);
+    if (!valid) {
+      return Error("Syntax error in schema!");
+    }
     var query = this.Select.build(args);
     delete args.input["groupBy"];
     var values = this.extactValues(args);
-    let tables = args.input.tables;
+    let tables = args.tables;
     let columns = await this.columns(tables);
     let queryColumns = [];
     tables.forEach((table) => {
@@ -139,10 +143,14 @@ export default class Data {
   }
 
   async distinct(args) {
+    let valid = this.isValid(args);
+    if (!valid) {
+      return Error("Syntax error in schema!");
+    }
     var query = this.Distinct.build(args);
     delete args.input["groupBy"];
     var values = this.extactValues(args);
-    let tables = args.input.tables;
+    let tables = args.tables;
     let columns = await this.columns(tables);
     let queryColumns = [];
     tables.forEach((table) => {
@@ -187,46 +195,66 @@ export default class Data {
   }
 
   async count(args) {
-    var input = args.input;
-    var sql = `SELECT COUNT(1) FROM ${input.table}`;
-    sql += this.Select.where(input.criteria);
-    var values = this.extactValues(args);
+    let valid = this.isValid(args);
+    if (!valid) {
+      return Error("Syntax error in schema!");
+    }
+    
+    let sql = `SELECT COUNT(1) FROM ${args.table}`;
+    sql += this.Select.where(args.criteria);
+    let values = this.extactValues(args);
     let result = await this.execute(sql, values);
     return result[0].count;
   }
 
   async min(args) {
-    var input = args.input;
-    var sql = `SELECT MIN(${input.column}) FROM ${input.table}`;
-    sql += this.Select.where(input.criteria);
-    var values = this.extactValues(args);
+    let valid = this.isValid(args);
+    if (!valid) {
+      return Error("Syntax error in schema!");
+    }
+  
+    let sql = `SELECT MIN(${args.column}) FROM ${args.table}`;
+    sql += this.Select.where(args.criteria);
+    let values = this.extactValues(args);
     let result = await this.execute(sql, values);
     return result[0].min;
   }
 
   async max(args) {
-    var input = args.input;
-    var sql = `SELECT MAX(${input.column}) FROM ${input.table}`;
-    sql += this.Select.where(input.criteria);
-    var values = this.extactValues(args);
+    let valid = this.isValid(args);
+    if (!valid) {
+      return Error("Syntax error in schema!");
+    }
+ 
+    let sql = `SELECT MAX(${args.column}) FROM ${args.table}`;
+    sql += this.Select.where(args.criteria);
+    let values = this.extactValues(args);
     let result = await this.execute(sql, values);
     return result[0].max;
   }
 
   async sum(args) {
-    var input = args.input;
-    var sql = `SELECT SUM(${input.column}) FROM ${input.table}`;
-    sql += this.Select.where(input.criteria);
+    let valid = this.isValid(args);
+    if (!valid) {
+      return Error("Syntax error in schema!");
+    }
+  
+    var sql = `SELECT SUM(${args.column}) FROM ${args.table}`;
+    sql += this.Select.where(args.criteria);
     var values = this.extactValues(args);
     let result = await this.execute(sql, values);
     return result[0].sum;
   }
 
   async avg(args) {
-    var input = args.input;
-    var sql = `SELECT AVG(${input.column}) FROM ${input.table}`;
-    sql += this.Select.where(input.criteria);
-    var values = this.extactValues(args);
+    let valid = this.isValid(args);
+    if (!valid) {
+      return Error("Syntax error in schema!");
+    }
+   
+    let sql = `SELECT AVG(${args.column}) FROM ${args.table}`;
+    sql += this.Select.where(args.criteria);
+    let values = this.extactValues(args);
     let result = await this.execute(sql, values);
     return result[0].avg;
   }
