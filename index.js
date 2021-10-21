@@ -99,7 +99,7 @@ export default class Data {
       return Error("Syntax error in schema!");
     }
     var query = this.Select.build(args);
-    delete args.input["groupBy"];
+    delete args["groupBy"];
     var values = this.extactValues(args);
     let tables = args.tables;
     let columns = await this.columns(tables);
@@ -150,7 +150,7 @@ export default class Data {
       return Error("Syntax error in schema!");
     }
     var query = this.Distinct.build(args);
-    delete args.input["groupBy"];
+    delete args["groupBy"];
     var values = this.extactValues(args);
     let tables = args.tables;
     let columns = await this.columns(tables);
